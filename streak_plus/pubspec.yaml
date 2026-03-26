@@ -1,7 +1,7 @@
 name: streak_plus
-description: "A new Flutter package project."
+description: Offline-first streak engine with sync support.
 version: 0.0.1
-homepage:
+homepage: https://github.com/androidshashi/streak_plus
 
 environment:
   sdk: ^3.8.0
