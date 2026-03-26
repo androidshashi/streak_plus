@@ -1,3 +1,12 @@
+# streak_plus — monorepo
+
+| Package | Description |
+|---|---|
+| [`streak_plus/`](streak_plus/) | Core library — streak engine, storage interface, sync interface |
+| [`streak_plus_example/`](streak_plus_example/) | Flutter example app with three focused demo screens |
+
+---
+
 # streak_plus
 
 A backend-agnostic, offline-first streak tracking engine for Flutter.
@@ -26,24 +35,29 @@ graph TD
 
     B --> C[StreakEngine]
 
-    C -->|calculateCurrentStreak\ncalculateLongestStreak\nisStreakActive| D[StreakCalculator\npure logic · no I/O]
-    C -->|save / load| E[StreakStorage\ninterface]
+    C -->|calculateCurrentStreak\ncalculateLongestStreak\nisStreakActive| D["StreakCalculator\npure logic · no I/O"]
+    C -->|save / load| E["StreakStorage\ninterface"]
     C -->|push / pull / sync| F[SyncManager]
 
-    E -->|implement| E1[MemoryStorage\nbuilt-in]
-    E -->|implement| E2[SharedPreferencesStorage\nyour app]
-    E -->|implement| E3[HiveStorage · SQLite\n· any backend]
+    E -->|implement| E1["MemoryStorage\nbuilt-in"]
+    E -->|implement| E2["SharedPreferencesStorage\nyour app"]
+    E -->|implement| E3["HiveStorage · SQLite\n· any backend"]
 
-    F -->|push / pull| G[StreakSyncAdapter\ninterface]
-    G -->|implement| G1[MockSyncAdapter\nexample]
-    G -->|implement| G2[FirebaseAdapter\nSupabaseAdapter\n· any backend]
+    F -->|push / pull| G["StreakSyncAdapter\ninterface"]
+    G -->|implement| G1["MockSyncAdapter\nexample"]
+    G -->|implement| G2["FirebaseAdapter\nSupabaseAdapter · any backend"]
 
-    C --- H[(StreakModel\nactivityDates\nfreezeDates\ncurrentStreak\nlongestStreak)]
+    C --- H[("StreakModel\nactivityDates\nfreezeDates\ncurrentStreak\nlongestStreak")]
 
-    style D fill:#fff3e0,stroke:#fb8c00
-    style E fill:#e3f2fd,stroke:#1e88e5
-    style G fill:#e8f5e9,stroke:#43a047
-    style H fill:#f3e5f5,stroke:#8e24aa
+    style D fill:#e65100,stroke:#ff8f00,color:#fff
+    style E fill:#0277bd,stroke:#29b6f6,color:#fff
+    style G fill:#2e7d32,stroke:#66bb6a,color:#fff
+    style H fill:#6a1b9a,stroke:#ce93d8,color:#fff
+    style E1 fill:#0277bd,stroke:#29b6f6,color:#fff
+    style E2 fill:#0277bd,stroke:#29b6f6,color:#fff
+    style E3 fill:#0277bd,stroke:#29b6f6,color:#fff
+    style G1 fill:#2e7d32,stroke:#66bb6a,color:#fff
+    style G2 fill:#2e7d32,stroke:#66bb6a,color:#fff
 ```
 
 ---
@@ -87,7 +101,7 @@ flowchart TD
     Q --> W[N days per week]
     Q --> M[N days per month]
     Q --> Y[N days per year]
-    Q --> C[N days per\ncustom window]
+    Q --> C["N days per\ncustom window"]
 
     D  --> CD["StreakConfig.daily"]
     W  --> CW["StreakConfig.weekly(requiredDays: 3)"]
@@ -101,11 +115,17 @@ flowchart TD
     CY --> RY[streak count in years]
     CC --> RC[streak count in windows]
 
-    style CD fill:#fff3e0,stroke:#fb8c00
-    style CW fill:#fff3e0,stroke:#fb8c00
-    style CM fill:#fff3e0,stroke:#fb8c00
-    style CY fill:#fff3e0,stroke:#fb8c00
-    style CC fill:#fff3e0,stroke:#fb8c00
+    style Q  fill:#37474f,stroke:#90a4ae,color:#fff
+    style CD fill:#e65100,stroke:#ff8f00,color:#fff
+    style CW fill:#e65100,stroke:#ff8f00,color:#fff
+    style CM fill:#e65100,stroke:#ff8f00,color:#fff
+    style CY fill:#e65100,stroke:#ff8f00,color:#fff
+    style CC fill:#e65100,stroke:#ff8f00,color:#fff
+    style R  fill:#37474f,stroke:#90a4ae,color:#fff
+    style RW fill:#37474f,stroke:#90a4ae,color:#fff
+    style RM fill:#37474f,stroke:#90a4ae,color:#fff
+    style RY fill:#37474f,stroke:#90a4ae,color:#fff
+    style RC fill:#37474f,stroke:#90a4ae,color:#fff
 ```
 
 ---
@@ -117,18 +137,23 @@ flowchart TD
     Start([syncWithRemote called]) --> Pull[Pull remote model]
     Pull --> NoRemote{Remote\nhas data?}
     NoRemote -- No --> KeepLocal[Keep local · done]
-    NoRemote -- Yes --> Compare{remote.longestStreak\nvs local.longestStreak}
-    Compare -- remote > local --> WinR[Remote wins]
-    Compare -- remote ≤ local --> WinL[Local wins\noffline-first]
-    WinR --> Union[Union activity dates\nfrom both sides]
+    NoRemote -- Yes --> Compare{"remote.longestStreak\nvs local.longestStreak"}
+    Compare -- "remote > local" --> WinR[Remote wins]
+    Compare -- "remote ≤ local" --> WinL["Local wins\noffline-first"]
+    WinR --> Union["Union activity dates\nfrom both sides"]
     WinL --> Union
     Union --> Save[Save merged model\nto local storage]
     Save --> Push[Push merged model\nback to remote]
     Push --> Done([done])
 
-    style WinR fill:#e3f2fd,stroke:#1e88e5
-    style WinL fill:#e8f5e9,stroke:#43a047
-    style Union fill:#f3e5f5,stroke:#8e24aa
+    style Start fill:#37474f,stroke:#90a4ae,color:#fff
+    style Done  fill:#37474f,stroke:#90a4ae,color:#fff
+    style NoRemote fill:#37474f,stroke:#90a4ae,color:#fff
+    style Compare  fill:#37474f,stroke:#90a4ae,color:#fff
+    style WinR  fill:#0277bd,stroke:#29b6f6,color:#fff
+    style WinL  fill:#2e7d32,stroke:#66bb6a,color:#fff
+    style Union fill:#6a1b9a,stroke:#ce93d8,color:#fff
+    style KeepLocal fill:#37474f,stroke:#90a4ae,color:#fff
 ```
 
 ---
